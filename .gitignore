@@ -1,0 +1,26 @@
+# Shopware 6 standard ignore
+/vendor/
+/.env.local
+/var/cache/
+/var/log/
+/public/media/
+/public/thumbnail/
+/public/theme/
+/public/bundles/
+
+# DDEV
+.ddev/db-build
+.ddev/web-build
+.ddev/commands
+.ddev/homeadditions
+
+# IDE
+.idea/
+.vscode/
+
+# Build artifacts
+*.log
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###

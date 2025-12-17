@@ -1,0 +1,29 @@
+# .ddev/providers/coolify.yaml
+# Configuration for pulling database and files from Coolify production
+# Usage: ddev pull coolify
+
+environment_variables:
+  # Configure these in .ddev/config.yaml web_environment or passed inline
+  # Example: ddev pull coolify
+  PROD_SSH_HOST: "root@your-coolify-server.com"
+  PROD_DB_CONTAINER: "shopware-mariadb" # Name of the DB container in Coolify
+  PROD_DB_USER: "shopware"
+  PROD_DB_PASS: "shopware"
+  PROD_DB_NAME: "shopware"
+  PROD_PROJECT_ROOT: "/var/lib/coolify/applications/..." # Path to app root
+
+auth_command:
+  command: |
+    # Ensure we have SSH access
+    ssh -o BatchMode=yes -o ConnectTimeout=5 ${PROD_SSH_HOST} "true" || (echo "Cannot SSH to ${PROD_SSH_HOST}" && exit 1)
+
+db_pull_command:
+  command: |
+    echo "Dumping database from ${PROD_SSH_HOST}..."
+    ssh ${PROD_SSH_HOST} "docker exec ${PROD_DB_CONTAINER} mysqldump -u'${PROD_DB_USER}' -p'${PROD_DB_PASS}' ${PROD_DB_NAME}" | gzip > .ddev/.downloads/db.sql.gz
+
+files_pull_command:
+  command: |
+    echo "Syncing media files from ${PROD_SSH_HOST}..."
+    rsync -avz -e ssh ${PROD_SSH_HOST}:${PROD_PROJECT_ROOT}/public/media/ public/media/
+    rsync -avz -e ssh ${PROD_SSH_HOST}:${PROD_PROJECT_ROOT}/public/thumbnail/ public/thumbnail/
