@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+.github
+
+# DDEV (nicht für Production)
+.ddev
+
+# Vendor (wird im Image neu installiert)
+vendor
+
+# Cache & Logs
+var/cache/*
+var/log/*
+!var/cache/.gitkeep
+!var/log/.gitkeep
+
+# Media (sollte aus persistentem Volume kommen)
+public/media/*
+public/thumbnail/*
+public/theme/*
+public/bundles/*
+public/sitemap/*
+
+# Environment
+.env.local
+.env.dev
+.env.test
+
+# IDE
+.idea
+.vscode
+
+# Tests
+tests
+phpunit.dist.xml
+.phpunit.cache
+
+# Docs
+AGENTS.md
+GEMINI.md
+README.md
+LICENSE

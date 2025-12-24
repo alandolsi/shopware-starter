@@ -64,6 +64,13 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Wir setzen CI=true und PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true für schnelleren Build
 ENV CI=true
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
+# PayPal Plugin Dependencies installieren (falls vorhanden)
+RUN if [ -d "custom/plugins/SwagPayPal/src/Resources/app/administration" ]; then \
+        npm install --prefix custom/plugins/SwagPayPal/src/Resources/app/administration @shopware-ag/meteor-admin-sdk || true; \
+    fi
+
+# Shopware Core Assets
 RUN npm clean-install --prefix vendor/shopware/administration/Resources/app/administration \
     && bin/build-administration.sh \
     && bin/build-storefront.sh
